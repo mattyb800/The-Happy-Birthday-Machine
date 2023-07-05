@@ -16,8 +16,8 @@ Users will be ables to...
 
 ##WIREFRAMES
 
-<img src="./wireframe1.png alt="Wireframe>
-<img src="./wireframe2.png alt="Wireframe>
+<img src="./wireframe1.png" alt="Wireframe>
+<img src="./wireframe2.png" alt="Wireframe>
 
 ##TRELLO BOARD
 
