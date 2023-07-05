@@ -21,7 +21,7 @@ Users will be ables to...
 
 ##TRELLO BOARD
 
-<img src=".trello.png" alt="trello">
+<img src="./trello.png" alt="trello">
 
 ##REACT-TREE
 
