@@ -1,4 +1,5 @@
 <h4>THE HAPPY BIRTHDAY MACHINE</h4>
+Leave yourself birthday reminders and gift ideas to become the ultimate Happy Birthday Machine.
 
 Users will be ables to...
 1. Sign up and login to their profile

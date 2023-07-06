@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  // Code goes here!
+  
+  return(
+    <h1>The Happy Birthday Machine</h1>
+  )
 }
 
 export default App;
