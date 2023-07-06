@@ -18,7 +18,18 @@ def index():
     return '<h1>The Happy Birthday Machine</h1>'
 
 
+#-----------SIGNUP-----------#
 
+
+
+#----------LOGIN-----------#
+
+
+#----------AUTHORIZED SESSION-----------#
+
+
+
+#----------LOGOUT------------#
 
 
 
