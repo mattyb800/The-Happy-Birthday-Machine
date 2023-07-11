@@ -37,8 +37,8 @@ Users will be ables to...
 | /logout               | DELETE | "{user_id}"                                 | "{}"                                                                   |
 | /users/{username}     | GET    |                                             | "User Portal:  Basic Info  Reminders List  Gift Ideas List"            |
 | /users/{username}     | PATCH  | "Name:  Username:  Email:"                  | "Name:{name},  Username:{username},  Email:{email}"                    |
-| /birthdays/{user_id}  | GET    |                                             | "{user_id.reminders}"                                                  |
-| /birthdays/{user_id}  | POST   | "{recipients.name},  {birthdays.date}       | "{recipients.name}, {recipients.birthday}"                             |
+| /recipients/{user_id}  | GET    |                                             | "{user_id.reminders}"                                                  |
+| /recipients/{user_id}  | POST   | "{recipients.name},  {recipients.date}       | "{recipients.name}, {recipients.birthday}"                             |
 | /birthdays/{user_id}  | PATCH  | "{recipients.name},  {birthdays.date}"      | "{recipients.name}, {recipients.birthday}"                             |
 | /birthdays/{user_id}  | DELETE | "users.reminder"                            | "{}"                                                                   |
 | /gift_ideas/{user_id} | GET    |                                             | "{user_id.gift_ideas}"                                                 |
