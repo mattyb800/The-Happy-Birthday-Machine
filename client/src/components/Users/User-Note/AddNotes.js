@@ -27,7 +27,7 @@ function AddNotes({ user }) {
         validationSchema: schema,
         //submit callback
         onSubmit: (values, actions) => {
-            fetch(`/users/${username}/addnotes`, {
+            fetch(`/users/${username}/notes`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"

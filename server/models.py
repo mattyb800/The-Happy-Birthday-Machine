@@ -27,7 +27,17 @@ class User(db.Model, SerializerMixin):
 
 
     #------SERIALIZE RULES----------------#
+    serialize_rules = (
+        "-created_at",
+        "-updated_at",
+        "-recipients.user",
+        "-name",
+        "-email",
+        "-_password_hash",
+        "-notes",
+        "-gifts"
 
+    )
     #-----VALIDATIONS------#
 
     @validates('name')
@@ -94,6 +104,12 @@ class Note(db.Model, SerializerMixin):
     recipient_id = db.Column(db.Integer, db.ForeignKey('recipients.id'), nullable=False)
     recipient = db.relationship('Recipient', back_populates='notes')
 
+    serialize_rules = (
+        "-created_at",
+        "-updated_at",
+        "-user.notes",
+        "-recipient.notes"
+    )
 
 #GIFT model, character limit validation
 
@@ -113,7 +129,10 @@ class Gift(db.Model, SerializerMixin):
     recipient = db.relationship('Recipient', back_populates='gifts')
 
 
-
+    serialize_rules = (
+        "-created_at",
+        "-updated_at"
+    )
 
 
 
@@ -133,3 +152,10 @@ class Recipient(db.Model, SerializerMixin):
     notes = db.relationship('Note', back_populates='recipient')
     gifts = db.relationship('Gift', back_populates='recipient')
     user = db.relationship('User', back_populates='recipients')
+
+    serialize_rules = (
+        "-created_at",
+        "-updated_at",
+        "-user.recipients"
+
+    )

@@ -13,6 +13,16 @@ function Navigation({ user, updateUser }) {
         }
       });
   }
+  if (!user) {
+    return (
+      <div>
+        <NavLink className='button' exact to='/app'>Home!</NavLink>
+        <NavLink className='button' exact to="/signup"> Sign Up! </NavLink>
+
+        <NavLink className="button" exact to="/login"> Log In! </NavLink>
+      </div>
+    )
+  }
 
 
   return (
@@ -21,9 +31,10 @@ function Navigation({ user, updateUser }) {
 
 
         <NavLink className='button' exact to='/app'>Home!</NavLink>
-        <NavLink className='button' exact to="/signup"> Sign Up! </NavLink>
+        {/*<NavLink className='button' exact to="/signup"> Sign Up! </NavLink>
 
-        <NavLink className="button" exact to="/login"> Log In! </NavLink>
+  <NavLink className="button" exact to="/login"> Log In! </NavLink>*/}
+
         <NavLink className="button" exact to={`/users/${user?.username}`}> User Portal! </NavLink>
         {user ?
           (<>

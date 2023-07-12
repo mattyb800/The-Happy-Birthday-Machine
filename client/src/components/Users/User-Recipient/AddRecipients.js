@@ -30,7 +30,7 @@ function AddRecipients({ user, updateRecipients }) {
     onSubmit: (values, actions) => {
       console.log(values)
       if (user) {
-        fetch(`/recipient`, {
+        fetch(`/users/${username}/recipients`, {
           method: "POST",
           headers: {
             "content-type": "application/json"

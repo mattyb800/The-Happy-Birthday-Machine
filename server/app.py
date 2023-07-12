@@ -7,7 +7,8 @@ from flask_migrate import Migrate
 # Local imports
 from config import app, api, db
 from models import User, Recipient, Note, Gift
- 
+import traceback
+import datetime
 
 login_manager = LoginManager()
 
@@ -83,13 +84,13 @@ api.add_resource(Logout, '/logout')
 
 #-----------USER VIEWS--------------#
 class CurrentUser(Resource):
-    @login_required
+   # @login_required
     def get(self, username):
             user = User.query.filter(User.username == username).first()
             if not user:
                 return make_response("User Not Found", 404)
             return make_response(user.to_dict(),200)
-    @login_required
+   # @login_required
     def patch(self, username):
             user = User.query.filter(User.username == username).first()
             data = request.get_json()
@@ -121,7 +122,30 @@ class Recipients(Resource):
             return make_response("Not Found", 404)
     
     
+   def post(self,username):
+        data = request.get_json()
+        
+        user = User.query.filter(User.username == username).first()
+        format_birthday = '%Y-%m-%d'
+        birthday = datetime.datetime.strptime(data["birthday"], format_birthday).date()
+        if user:
+            try:
+                new_recipient = Recipient(
+                    user_id = user.id,
+                    name = data.get('name'),
+                    birthday = birthday)
+                db.session.add(new_recipient)
+                db.session.commit()
+            
+            except:
+                return make_response("Could not add recipient", 400)
 
+            return make_response(new_recipient.to_dict(), 200) 
+
+        if not user:
+            return make_response("Gotta Log In", 404) 
+        
+       
     
 api.add_resource(Recipients, '/users/<string:username>/recipients')  
 
@@ -138,8 +162,29 @@ class Notes(Resource):
             return make_response( notes, 200)
         if not user:
             return make_response("Not Found", 404)
+        
 
-api.add_resource(Notes, '/<string:username>/notes') 
+    def post(self, username):
+        data = request.get_json()
+        user = User.query.filter(User.username == username).first()
+        recipient_id = Note.query.filter(Note.recipient_id == Recipient.query.filter(Recipient.id)).first()
+        if user:
+            
+            try:
+                new_note = Note(
+                    user_id = user.id,
+                    recipient_id = recipient_id,
+                    body = data.get('body'),
+                )    
+                db.session.add(new_note)
+                db.session.commit()
+                return  make_response(new_note.to_dict(), 201)
+            except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500
+
+            
+api.add_resource(Notes, '/users/<string:username>/notes') 
 
 class Gifts(Resource):
     @login_required
@@ -148,7 +193,7 @@ class Gifts(Resource):
         if user:
             gifts = []
             for gift in user.gifts:
-                gifts_list = gifts.to_dict()
+                gifts_list = gift.to_dict()
                 gifts.append(gifts_list)
             return make_response( gifts, 200)
         if not user:
@@ -160,45 +205,46 @@ api.add_resource(Gifts, '/<string:username>/gifts')
 #----------RECIPIENT VIEWS--------------#
 class OneRecipient(Resource):
    #@login_required
-   def post(self):
-        data = request.get_json()
-        user = current_user
-        if user:
-            try:
-                new_recipient = Recipient(
-                    user_id = user.id,
-                    name = data.get('name'),
-                    birthday = data.get('birthday'))
-                db.session.add(new_recipient)
-                db.session.commit()
-            except:
-                return make_response("Could not add recipient", 400)
+   def get(self,id):
+       recipient = Recipient.query.filter(Recipient.id == id).first()
+       if not recipient:
+           return make_response("Not Found", 404)
+       return make_response(recipient.to_dict(), 200)
 
-            return make_response(new_recipient.to_dict(), 200) 
+        
+   def delete(self, id):
+       recipient = Recipient.query.filter(Recipient.id == id).first()
 
-        if not user:
-            return make_response("Gotta Log In", 404) 
+       db.session.delete(recipient)
+       db.session.commit()
+
+       return make_response({}, 202)
+   
+   def patch(self, id):
+       recipient = Recipient.query.filter(Recipient.id == id).first()
+
+       data = request.get_json()
+       format_birthday = '%Y-%m-%d'
+       birthday = datetime.datetime.strptime(data["birthday"], format_birthday).date()
+       try:
+           for attr in data:
+               if attr == birthday:
+                    birthday = datetime.datetime.strptime(data["birthday"], format_birthday).date()
+               setattr(recipient, attr, data.get(attr))
+           db.session.add(recipient)
+           db.session.commit()
+       except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500  
+
+       
+       return make_response(recipient.to_dict(), 202)   
         
 
 
-api.add_resource(OneRecipient, '/recipient'  )     
+api.add_resource(OneRecipient, '/recipient/<int:id>'  )     
 #-----------NOTES------------------------#
-@app.route('/users/<string:username>/addnotes', methods=['POST'])
-def addNotes(username):
-    data = request.get_json()
-    user = current_user
-    try:
-        new_note = Note(
-        user = data.get('user'),    
-        body = data.get('body'),
 
-            )
-        db.session.add(new_note)
-        db.session.commit()
-    except:
-        return make_response("Could not add note", 400)
-    dict = new_note.to_dict()
-    return make_response(jsonify(dict), 201)    
             
 
 if __name__ == '__main__':
