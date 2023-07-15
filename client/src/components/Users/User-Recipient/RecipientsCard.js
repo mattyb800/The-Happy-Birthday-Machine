@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 
 function RecipientsCard({ recipient, onDeleteRecipient }) {
-  const { id, name, birthday } = recipient
+  const { id, name, birthday, notes } = recipient
+  const params = useParams()
+  const navigate = useNavigate()
+
 
 
   function handleDelete() {
@@ -15,6 +18,13 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
       });
   }
 
+  function handleClick() {
+    navigate(`/notes/${id}`, { state: recipient });
+  };
+
+
+
+
 
 
 
@@ -25,6 +35,11 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
         <h2>{birthday}</h2>
         <button className="button">Edit Info</button>
         <button className="button" onClick={handleDelete}>Delete</button>
+      </section>
+      <section>
+
+        <button className="button" onClick={handleClick}>Notes!</button>
+
       </section>
 
     </li>

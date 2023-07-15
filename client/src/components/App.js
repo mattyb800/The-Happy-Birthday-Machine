@@ -5,26 +5,29 @@ import LogIn from './LogIn'
 import Navigation from './Navigation'
 import Users from './Users'
 import AddRecipients from './Users/User-Recipient/AddRecipients'
+import RecipientNotes from './Users/User-Recipient/RecipientNotes'
 function App() {
 
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    getUser()
+
+    if (!user) {
+      fetch('/authorize_session')
+        .then(response => {
+          if (response.ok) {
+            response.json().then((user) => setUser(user))
+          }
+
+          else { setUser(null) }
+        }
+        )
+    }
   }, []);
 
 
-  function getUser() {
-    fetch('/authorize_session')
-      .then(response => {
-        if (response.ok) {
-          response.json().then((user) => setUser(user))
-        }
 
-        else { setUser(null) }
-      }
-      )
-  }
+
 
   function updateUser(user) {
     setUser(user)
@@ -41,6 +44,7 @@ function App() {
         <Route path='/app' element={<App />} />
         <Route path='/signup' element={<SignUp updateUser={updateUser} />} />
         <Route path='/login' element={<LogIn updateUser={updateUser} />} />
+        <Route path='/notes/:recipient_id' element={<RecipientNotes />} />
       </Routes>
     </div>
   )

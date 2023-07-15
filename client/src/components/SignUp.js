@@ -31,6 +31,7 @@ function SignUp({ updateUser }) {
         validationSchema: schema,
         //submit callback
         onSubmit: (values, actions) => {
+            console.log(values)
             fetch("/signup", {
                 method: "POST",
                 headers: {

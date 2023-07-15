@@ -24,7 +24,7 @@ def index():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    return User.query.filter(User.id == user_id).first()
 
 #-----------SIGNUP-----------#
 class Signup(Resource):
@@ -37,7 +37,7 @@ class Signup(Resource):
         new_user.password_hash = data.get('password')
         db.session.add(new_user)
         db.session.commit()
-        session['user_id'] = new_user.id
+        login_user(new_user, remember=True)
         return make_response(new_user.to_dict(), 201)
 
 
@@ -49,28 +49,30 @@ api.add_resource(Signup, '/signup')
 #----------LOGIN-----------#
 class Login(Resource):
     def post(self):
+     try:
         data = request.get_json()
         user = User.query.filter_by(username = data.get('username')).first()
         password = request.get_json()['password']
 
         if user.authenticate(password):
-            session['user_id'] = user.id
+            login_user(user, remember=True)
             return user.to_dict(), 200
-        
-        return{'Invalid Username/Password'}, 401
-
+        if not user:
+            return{'Invalid Username/Password'}, 401
+     except:
+        return make_response('Gotta log in', 401)
 
 api.add_resource(Login, '/login')
 
 #----------AUTHORIZED SESSION-----------#
 class AuthorizedSession(Resource):
     def get(self):
-        try:
-            user = User.query.filter_by(
-                id = session.get('user_id')).first()
-            return make_response(user.to_dict(), 200)
-        except:
-            return make_response({'message': 'Must Log In'}, 401)
+     try:   
+        if current_user.is_authenticated:
+            user = current_user.to_dict()
+            return make_response(user,200)
+     except:
+         return make_response('Not Authorized', 404)
 
 api.add_resource(AuthorizedSession, '/authorize_session')
 
@@ -109,7 +111,7 @@ api.add_resource(CurrentUser, '/users/<string:username>')
 
 
 class Recipients(Resource):
-   #@login_required
+   @login_required
    def get(self, username):
         user = User.query.filter(User.username == username).first()
         if user:
@@ -121,7 +123,7 @@ class Recipients(Resource):
         if not user:
             return make_response("Not Found", 404)
     
-    
+   @login_required
    def post(self,username):
         data = request.get_json()
         
@@ -152,39 +154,17 @@ api.add_resource(Recipients, '/users/<string:username>/recipients')
 
 class Notes(Resource):
    # @login_required
-    def get(self, username):
-        user = User.query.filter(User.username == username).first()
-        if user:
-            notes = []
-            for note in user.notes:
-                notes_list = note.to_dict()
-                notes.append(notes_list)
-            return make_response( notes, 200)
-        if not user:
-            return make_response("Not Found", 404)
-        
+    def get(self, recipient_id):
+        try:
+            notes_dict = [note.to_dict() for note in Note.query.filter(Note.recipient_id == recipient_id).all()]
+            return {"notes": notes_dict}
+        except:
+            make_response("Not Found", 404)
+   # @login_required
 
-    def post(self, username):
-        data = request.get_json()
-        user = User.query.filter(User.username == username).first()
-        recipient_id = Note.query.filter(Note.recipient_id == Recipient.query.filter(Recipient.id)).first()
-        if user:
-            
-            try:
-                new_note = Note(
-                    user_id = user.id,
-                    recipient_id = recipient_id,
-                    body = data.get('body'),
-                )    
-                db.session.add(new_note)
-                db.session.commit()
-                return  make_response(new_note.to_dict(), 201)
-            except Exception as e: 
-                 traceback.print_exc() 
-                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500
 
             
-api.add_resource(Notes, '/users/<string:username>/notes') 
+api.add_resource(Notes, '/notes/<int:recipient_id>') 
 
 class Gifts(Resource):
     @login_required
@@ -199,7 +179,32 @@ class Gifts(Resource):
         if not user:
             return make_response("Not Found", 404)
 
-api.add_resource(Gifts, '/<string:username>/gifts')
+api.add_resource(Gifts, '/users/<string:username>/gifts')
+
+class AddGifts(Resource):
+    @login_required
+    def post(self):
+        data = request.get_json()
+
+        user = current_user
+
+        if user:
+            try:
+                new_gift = Gift(
+                    user_id=user.id,
+                    description=data["description"],
+                    image=data["image"],
+                    locations=data["locations"],
+
+                )
+                db.session.add(new_gift)
+                db.session.commit()
+            except:
+                return make_response("Could not add gift", 400)
+
+            return make_response(new_gift.to_dict(), 200)    
+
+api.add_resource(AddGifts, '/gifts')      
 
 
 #----------RECIPIENT VIEWS--------------#
@@ -236,16 +241,37 @@ class OneRecipient(Resource):
        except Exception as e: 
                  traceback.print_exc() 
                  return {"error" : "whatever you want your message to be", "message": str(e)}, 500  
-
        
-       return make_response(recipient.to_dict(), 202)   
-        
 
+   
+       
+       
+       
+        
 
 api.add_resource(OneRecipient, '/recipient/<int:id>'  )     
 #-----------NOTES------------------------#
-
-            
+class AddNotes(Resource):
+    def post(self):
+        data = request.get_json()
+        print(data)
+        
+        user = current_user                                  
+        recipient_id = data.get("recipient_id")
+        if user:
+            try:
+                note = Note(
+                    recipient_id= recipient_id, 
+                    user_id = user.id,
+                    body = data.get('body'),
+                )    
+                db.session.add(note)
+                db.session.commit()
+                return  make_response(note.to_dict(only=("id", "user_id", "recipient_id", "body")), 201)
+            except Exception as e: 
+                    traceback.print_exc() 
+                    return {"error" : "whatever you want your message to be", "message": str(e)}, 500
+api.add_resource(AddNotes, '/addnotes')            
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -3,13 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates 
-
+from flask_login import UserMixin, LoginManager
+from sqlalchemy_serializer import SerializerMixin
 
 from config import db, bcrypt
 
 # USER model, name, email, username, password validations
 
-class User(db.Model, SerializerMixin):
+class User(db.Model, SerializerMixin, UserMixin):
     __tablename__= "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -35,7 +36,8 @@ class User(db.Model, SerializerMixin):
         "-email",
         "-_password_hash",
         "-notes",
-        "-gifts"
+        "-gifts",
+        "-recipients"
 
     )
     #-----VALIDATIONS------#
@@ -101,14 +103,17 @@ class Note(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', back_populates='notes')
 
-    recipient_id = db.Column(db.Integer, db.ForeignKey('recipients.id'), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('recipients.id'))
     recipient = db.relationship('Recipient', back_populates='notes')
 
     serialize_rules = (
         "-created_at",
         "-updated_at",
         "-user.notes",
-        "-recipient.notes"
+        "-recipient.notes",
+        "-user",
+        "-recipient",
+
     )
 
 #GIFT model, character limit validation
@@ -121,17 +126,21 @@ class Gift(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     description = db.Column(db.String, nullable=False)
-
+    image = db.Column(db.String)
+    location = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', back_populates='gifts')
 
-    recipient_id = db.Column(db.Integer, db.ForeignKey('recipients.id'), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('recipients.id'))
     recipient = db.relationship('Recipient', back_populates='gifts')
 
 
     serialize_rules = (
         "-created_at",
-        "-updated_at"
+        "-updated_at",
+        "-user",
+        "-recipient"
+
     )
 
 
@@ -156,6 +165,10 @@ class Recipient(db.Model, SerializerMixin):
     serialize_rules = (
         "-created_at",
         "-updated_at",
-        "-user.recipients"
+        "-user.recipients",
+        "-user",
+        "-notes.recipients",
+        "-notes"
+
 
     )

@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import RecipientsContainer from './Users/User-Recipient/RecipientsContainer'
 import AddRecipients from './Users/User-Recipient/AddRecipients'
-import AddNotes from './Users/User-Note/AddNotes'
+
 import UserForm from './UserForm'
+import GiftsContainer from './Users/User-Gift/GiftsContainer'
+import AddGifts from './Users/User-Gift/AddGifts'
 
 
 function Users({ user, updateUser }) {
 
   const { username } = useParams()
   const [recipients, setRecipients] = useState([])
+  const [gifts, setGifts] = useState([])
   const [userForm, setUserForm] = useState(false)
   useEffect(() => {
     getRecipients();
+    getGifts();
   }, [])
 
 
@@ -30,9 +34,21 @@ function Users({ user, updateUser }) {
       )
 
   }
+  function getGifts() {
+    fetch(`/users/${username}/gifts`)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(gifts => setGifts(gifts))
+        }
+
+        else setGifts([])
+      }
+      )
+
+  }
 
   function updateRecipients(recipient) {
-    setRecipients(recipient)
+    setRecipients([...recipients, recipient])
   }
 
   function onDeleteRecipient(id) {
@@ -72,7 +88,9 @@ function Users({ user, updateUser }) {
       </h1>
       <RecipientsContainer recipients={recipients} user={user} onDeleteRecipient={onDeleteRecipient} />
       <AddRecipients recipients={recipients} user={user} updateRecipients={updateRecipients} />
-      <AddNotes user={user} />
+      <GiftsContainer gifts={gifts} user={user} />
+
+      <AddGifts />
     </div>
   )
 }

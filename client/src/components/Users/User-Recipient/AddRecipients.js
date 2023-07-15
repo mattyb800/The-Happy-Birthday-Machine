@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 function AddRecipients({ user, updateRecipients }) {
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
+
   const { username } = useParams()
 
 
@@ -41,8 +41,9 @@ function AddRecipients({ user, updateRecipients }) {
             res.json().then((recipient) => {
               console.log(recipient);
               actions.resetForm();
+
               updateRecipients(recipient);
-              navigate(`users/${username}`)
+
             })
           } else {
             res.json().then((error) => setError(error.message));
