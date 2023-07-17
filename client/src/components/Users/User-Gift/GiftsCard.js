@@ -1,12 +1,36 @@
 import React from 'react'
 
-function GiftsCard({ gift }) {
-    const { description } = gift
+function GiftsCard({ gift, onDeleteGifts }) {
+    const { description, image, location, id } = gift
+
+
+    function handleDelete() {
+        fetch(`/gift/${gift.id}`, {
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+            .then(() => {
+                onDeleteGifts(gift);
+            });
+    }
+
+
+
+
+
+
+
+
+
+
     return (
-        <div>GiftsCard
-            <li className="gifts">
+        <div>Gift Ideas:
+            <li className="gifts" id={id}>
                 <h2>{description}</h2>
+                <img src={image} alt={description} />
+                <h2>{location}</h2>
             </li>
+            <button className="button" onClick={() => handleDelete(gift.id)}>Delete</button>
         </div>
     )
 }

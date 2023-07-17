@@ -49,7 +49,7 @@ function App() {
 
         <Routes>
           <Route path='/users/:username' element={<Users updateUser={updateUser} user={user} />} />
-          <Route path='/gifts' element={GiftsContainer} />
+          <Route path='/gifts' element={<GiftsContainer />} />
           <Route path='/app' element={<App />} />
           <Route path='/signup' element={<SignUp updateUser={updateUser} />} />
           <Route path='/login' element={<LogIn updateUser={updateUser} />} />

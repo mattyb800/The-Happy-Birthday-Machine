@@ -1,14 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom"
+import UserContext from "./Context/UserContext";
 
 
-function UserForm({ editUser, user }) {
+function UserForm({ editUser }) {
 
     const [error, setError] = useState(null)
     const navigate = useNavigate()
-    const { params } = useParams()
+    const { username } = useParams()
+    const { user, setUser } = useContext(UserContext)
+
+
+
+    function handleDelete() {
+        fetch(`/users/${username}`, {
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+            .then(() => {
+                setUser(null);
+                navigate('/app")')
+            });
+    }
+
+
+
+
+
     const schema = yup.object().shape({
         name: yup.string("Edit name"),
         username: yup.string("Edit username"),
@@ -33,7 +53,7 @@ function UserForm({ editUser, user }) {
         onSubmit: (values, actions) => {
             editUser(values)
             actions.resetForm()
-            navigate(`/users/${user?.username}`)
+            navigate(`/users/${username}`)
         }
     })
 
@@ -91,6 +111,7 @@ function UserForm({ editUser, user }) {
                 </label>
                 <input type="submit" value="Change Info!" />
             </form>
+            <button className="button" onClick={() => handleDelete(user)}>Delete Account</button>
         </section>
     )
 }

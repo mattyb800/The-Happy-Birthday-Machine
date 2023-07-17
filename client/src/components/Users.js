@@ -1,21 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import RecipientsContainer from './Users/User-Recipient/RecipientsContainer'
 import AddRecipients from './Users/User-Recipient/AddRecipients'
 import UserContext from "./Context/UserContext";
 import UserForm from './UserForm'
-import GiftsContainer from './Users/User-Gift/GiftsContainer'
-import AddGifts from './Users/User-Gift/AddGifts'
+
+
 
 
 function Users() {
 
-  const { username } = useParams()
+  const navigate = useNavigate()
   const [recipients, setRecipients] = useState([])
-  const [gifts, setGifts] = useState([])
+  const { username } = useParams()
   const [userForm, setUserForm] = useState(false)
   const { user, setUser } = useContext(UserContext)
   useEffect(() => {
+
     getRecipients();
 
   }, [])
@@ -24,7 +25,7 @@ function Users() {
   console.log(user)
 
   function getRecipients() {
-    fetch(`/users/${user.username}/recipients`)
+    fetch(`/users/${username}/recipients`)
       .then(response => {
         console.log(response)
         if (response.ok) {
@@ -68,6 +69,12 @@ function Users() {
     setUserForm((userForm) => !userForm)
   }
 
+  function handleClick() {
+    navigate(`/gifts`);
+  };
+
+
+
 
 
   return (
@@ -79,9 +86,14 @@ function Users() {
       </h1>
       <RecipientsContainer recipients={recipients} user={user} onDeleteRecipient={onDeleteRecipient} />
       <AddRecipients updateRecipients={updateRecipients} user={user} />
-      <GiftsContainer gifts={gifts} user={user} />
+      <section>
 
-      <AddGifts />
+        <button className="button" onClick={handleClick}>Gifts!</button>
+
+      </section>
+
+
+
     </div>
   )
 }

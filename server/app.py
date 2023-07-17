@@ -14,7 +14,7 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 app.secret_key = b'\x1d"\xc3\xbf\xccS\xa8\t\xff1\xe7\xc0\x07ydx'
-
+migrate = Migrate(app, db)
 # Views go here!
 
 @app.route('/')
@@ -51,13 +51,16 @@ class Login(Resource):
     def post(self):
      try:
         data = request.get_json()
-        user = User.query.filter_by(username = data.get('username')).first()
-        password = request.get_json()['password']
+        username = data.get('username')
+        password = data.get('password')
+
+        user = User.query.filter(User.username == username).first()
+        print(user)
 
         if user.authenticate(password):
             login_user(user, remember=True)
             print(user)
-            return user.to_dict(only=()), 200
+            return user.to_dict(), 200
         if not user:
             return{'Invalid Username/Password'}, 401
     # except:
@@ -101,17 +104,30 @@ class CurrentUser(Resource):
             return make_response(user.to_dict(),200)
    # @login_required
     def patch(self, username):
-            user = User.query.filter(User.username == username).first()
+           
             data = request.get_json()
+            user = User.query.filter(User.username == username).first()
             try:
                 for attr in data:
                     setattr(user, attr, data.get(attr))
                 db.session.add(user)
                 db.session.commit()
-            except:
-                return make_response("Unable to update", 400)    
-            return make_response(user.to_dict(),200)
+            
+            except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "Could not edit Recipient", "message": str(e)}, 500    
+            return make_response(user.to_dict(only=("id", "name", "username", "email")),200)
+      
+    def delete(self, username):
+       try:
+        user = User.query.filter(User.username == username).first()
 
+        db.session.delete(user)
+        db.session.commit()
+
+        return make_response({}, 202)
+       except:
+           return make_response("Failed to delete", 400)
 
 
 api.add_resource(CurrentUser, '/users/<string:username>')   
@@ -215,18 +231,34 @@ class AddGifts(Resource):
                     user_id=user.id,
                     description=data["description"],
                     image=data["image"],
-                    locations=data["locations"],
+                    location=data["location"],
 
                 )
                 db.session.add(new_gift)
                 db.session.commit()
-            except:
-                return make_response("Could not add gift", 400)
+
+            except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "Could not delete gift", "message": str(e)}, 500       
+            
 
             return make_response(new_gift.to_dict(), 200)    
 
-api.add_resource(AddGifts, '/gifts')      
+api.add_resource(AddGifts, '/gifts')     
 
+class DeleteGift(Resource):
+         def delete(self, id):
+            try:
+               gift = Gift.query.filter(Gift.id == id).first()
+                
+               db.session.delete(gift)
+               db.session.commit()
+
+               return make_response({}, 202)
+            except:
+                 return make_response("Failed to delete", 400)
+
+api.add_resource(DeleteGift, '/gift/<int:id>')
 
 #----------RECIPIENT VIEWS--------------#
 class OneRecipient(Resource):
@@ -264,7 +296,7 @@ class OneRecipient(Resource):
            db.session.commit()
        except Exception as e: 
                  traceback.print_exc() 
-                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500  
+                 return {"error" : "Could not edit Recipient", "message": str(e)}, 500  
        
 
    

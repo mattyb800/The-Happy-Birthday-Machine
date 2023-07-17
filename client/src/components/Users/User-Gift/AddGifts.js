@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom"
 
-function AddGifts() {
+function AddGifts({ updateGifts }) {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
 
@@ -38,7 +38,8 @@ function AddGifts() {
                     res.json().then(gift => {
                         actions.resetForm()
                         console.log(gift)
-                        navigate(`/`)
+                        updateGifts(gift)
+
                     })
                 } else {
                     res.json().then((error) => setError(error.message));

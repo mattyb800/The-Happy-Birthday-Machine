@@ -10,6 +10,9 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
 
 
 
+
+
+
   function handleDelete() {
     fetch(`/recipient/${recipient.id}`, {
       method: 'DELETE',
@@ -32,7 +35,7 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
 
   return (
     <li className="card" id={id}>
-      <section classname="info">
+      <section className="info">
         <h2>{name}</h2>
         <h2>{birthday}</h2>
         <button className="button">Edit Info</button>

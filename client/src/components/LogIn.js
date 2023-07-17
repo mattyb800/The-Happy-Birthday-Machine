@@ -37,7 +37,7 @@ function LogIn({ updateUser }) {
                 if (res.ok) {
                     res.json().then(user => {
                         actions.resetForm()
-                        setUser(user)
+                        updateUser(user)
                         navigate(`/users/${username}`)
                     })
                 } else {

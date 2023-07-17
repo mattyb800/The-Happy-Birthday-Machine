@@ -35,7 +35,7 @@ function Navigation({ user, updateUser }) {
 
   <NavLink className="button" exact to="/login"> Log In! </NavLink>*/}
 
-        <NavLink className="button" exact to={`/users/${user?.username}`}> User Portal! </NavLink>
+        <NavLink className="button" exact to={`/users/${user.username}`}> User Portal! </NavLink>
         {user ?
           (<>
             <button onClick={handleLogOut} className="button" >

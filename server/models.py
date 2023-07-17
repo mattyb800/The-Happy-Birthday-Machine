@@ -37,7 +37,8 @@ class User(db.Model, SerializerMixin, UserMixin):
         "-_password_hash",
         "-notes.user",
         "-gifts",
-        "-recipients"
+        "-recipients",
+        "-notes"
 
     )
     #-----VALIDATIONS------#
