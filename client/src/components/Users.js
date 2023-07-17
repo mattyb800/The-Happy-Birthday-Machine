@@ -74,7 +74,7 @@ function Users() {
   };
 
 
-
+  console.log(user)
 
 
   return (

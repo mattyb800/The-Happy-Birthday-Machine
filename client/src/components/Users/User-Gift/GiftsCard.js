@@ -1,6 +1,7 @@
 import React from 'react'
 
-function GiftsCard({ gift, onDeleteGifts }) {
+
+function GiftsCard({ gift, onDeleteGifts, handleFavorite }) {
     const { description, image, location, id } = gift
 
 
@@ -25,13 +26,15 @@ function GiftsCard({ gift, onDeleteGifts }) {
 
     return (
         <div>Gift Ideas:
+
             <li className="gifts" id={id}>
                 <h2>{description}</h2>
                 <img src={image} alt={description} />
                 <h2>{location}</h2>
             </li>
+
             <button className="button" onClick={() => handleDelete(gift.id)}>Delete</button>
-        </div>
+        </div >
     )
 }
 

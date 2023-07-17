@@ -22,9 +22,9 @@ class User(db.Model, SerializerMixin, UserMixin):
     email = db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String)
 
-    notes = db.relationship('Note', back_populates='user')
-    gifts = db.relationship('Gift', back_populates='user')
-    recipients = db.relationship('Recipient', back_populates= 'user')
+    notes = db.relationship('Note', back_populates='user', cascade='all, delete-orphan')
+    gifts = db.relationship('Gift', back_populates='user', cascade='all, delete-orphan')
+    recipients = db.relationship('Recipient', back_populates= 'user', cascade='all, delete-orphan')
 
 
     #------SERIALIZE RULES----------------#
@@ -159,8 +159,8 @@ class Recipient(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     birthday = db.Column(db.Date, nullable=False)
 
-    notes = db.relationship('Note', back_populates='recipient')
-    gifts = db.relationship('Gift', back_populates='recipient')
+    notes = db.relationship('Note', back_populates='recipient', cascade='all, delete-orphan')
+    gifts = db.relationship('Gift', back_populates='recipient', cascade='all, delete-orphan')
     user = db.relationship('User', back_populates='recipients')
 
     serialize_rules = (

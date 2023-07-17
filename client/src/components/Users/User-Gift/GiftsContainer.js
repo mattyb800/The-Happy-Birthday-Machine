@@ -5,12 +5,13 @@ import AddGifts from './AddGifts';
 import UserContext from "../../Context/UserContext";
 import GiftSearch from "./GiftSearch";
 
+
 function GiftsContainer() {
     const { username } = useParams()
     const { user, setUser } = useContext(UserContext)
     const [gifts, setGifts] = useState([])
     const [search, setSearch] = useState('')
-    const [favorites, setFavorites] = useState([])
+
 
     useEffect(() => {
         getGifts();
@@ -50,10 +51,10 @@ function GiftsContainer() {
         setGifts(updateGifts);
     }
 
-    function handleFavorite(e) {
-        setFavorites(e.target.value);
 
-    }
+
+
+
 
 
 
@@ -61,7 +62,10 @@ function GiftsContainer() {
     return (
         <div>
             <GiftSearch search={search} handleSearch={handleSearch} />
-            {filteredGifts?.map(gift => <GiftsCard key={gift.id} gift={gift} onDeleteGifts={onDeleteGifts} handleFavorite={handleFavorite} />)}
+
+
+            {filteredGifts?.map(gift => <GiftsCard key={gift.id} gift={gift} onDeleteGifts={onDeleteGifts} />)}
+
             <AddGifts updateGifts={updateGifts} />
             <section>
 
