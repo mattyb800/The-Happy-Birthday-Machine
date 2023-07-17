@@ -4,7 +4,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates 
 from flask_login import UserMixin, LoginManager
-from sqlalchemy_serializer import SerializerMixin
+
 
 from config import db, bcrypt
 
@@ -35,7 +35,7 @@ class User(db.Model, SerializerMixin, UserMixin):
         "-name",
         "-email",
         "-_password_hash",
-        "-notes",
+        "-notes.user",
         "-gifts",
         "-recipients"
 

@@ -1,26 +1,52 @@
 import React, { useState, useEffect } from 'react'
-
+import NotesCard from './NotesCard'
 import { useLocation } from "react-router-dom"
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 function RecipientNotes() {
-
+    const [notes, setNotes] = useState([]);
     const [error, setError] = useState(null)
     const location = useLocation()
     const recipient = location.state
 
-
-    const mappedNotes = recipient.notes.map((note, index) => <p key={index}>{note}</p>)
-
-
-
-
-
-
-
-
     console.log(recipient.id)
+
+    useEffect(() => {
+        getNotes();
+    }, [])
+
+
+    // console.log(mappedNotes)
+    function getNotes() {
+        fetch(`/notes/${recipient.id}`)
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(notes => setNotes(notes))
+                }
+
+                else setNotes([])
+            }
+            )
+
+    }
+
+    const mappedNotes = notes.map((note) => (
+        <NotesCard
+            key={note.id}
+            recipient={recipient.id}
+            note={note}
+            onDeleteNotes={onDeleteNotes}
+        />
+    ));
+
+    function updateNotes(note) {
+        setNotes([...notes, note])
+    }
+    function onDeleteNotes(noteToDelete) {
+        const updateNotes = notes.filter((note) => note.id !== noteToDelete.id);
+        setNotes(updateNotes)
+    }
 
     const schema = yup.object().shape({
         body: yup.string().required("Leave a note"),
@@ -54,11 +80,12 @@ function RecipientNotes() {
                 body: JSON.stringify(newNote),
             }).then(res => {
                 if (res.ok) {
+                    console.log(newNote)
                     res.json().then((note) => {
 
                         actions.resetForm()
 
-                        console.log(note)
+                        updateNotes(note)
 
                     })
                 } else {
@@ -70,7 +97,7 @@ function RecipientNotes() {
     })
 
 
-
+    console.log(notes)
 
 
 
@@ -87,9 +114,9 @@ function RecipientNotes() {
 
     return (
         <div>
-            <ul>Notes about {recipient.name}:
-                <p>{recipient.notes.length === 0 ? "Perfect. No notes." : mappedNotes}</p>
-            </ul>
+            <p>Notes about {recipient.name}:
+                <p>{notes.length === 0 ? "Perfect. No notes." : mappedNotes}</p></p>
+
             <section>
 
                 <form onSubmit={formik.handleSubmit}>

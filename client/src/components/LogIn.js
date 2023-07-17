@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom"
+import UserContext from "./Context/UserContext";
 
 function LogIn({ updateUser }) {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
     const { username } = useParams()
-
+    const { setUser } = useContext(UserContext);
     const schema = yup.object().shape({
         username: yup.string().required("WHO GOES THERE???"),
         password: yup.string().required("WHAT'S YOUR PASSWORD???")
@@ -36,8 +37,8 @@ function LogIn({ updateUser }) {
                 if (res.ok) {
                     res.json().then(user => {
                         actions.resetForm()
-                        updateUser(user)
-                        navigate(`/users/${user?.username}`)
+                        setUser(user)
+                        navigate(`/users/${username}`)
                     })
                 } else {
                     res.json().then((error) => setError(error.message));

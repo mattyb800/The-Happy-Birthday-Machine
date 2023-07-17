@@ -1,10 +1,10 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext } from 'react'
+import UserContext from "../../Context/UserContext";
 import RecipientsCard from './RecipientsCard'
 
 
-function RecipientsContainer({ recipients, user, onDeleteRecipient }) {
-  const { username } = useParams()
+function RecipientsContainer({ recipients, onDeleteRecipient }) {
+  const { user, setUser } = useContext(UserContext);
 
 
 
@@ -12,11 +12,18 @@ function RecipientsContainer({ recipients, user, onDeleteRecipient }) {
 
   console.log(recipients)
 
+  const mappedRecipients = recipients.map((recipient) => (
+    <RecipientsCard
+      key={recipient.id}
+      recipient={recipient}
+      onDeleteRecipient={onDeleteRecipient}
+    />
+  ));
 
 
   return (
     <div>
-      {recipients?.map(recipient => <RecipientsCard key={recipient.id} recipient={recipient} onDeleteRecipient={onDeleteRecipient} />)}
+      {mappedRecipients}
       <section>
 
       </section>

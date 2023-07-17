@@ -56,11 +56,15 @@ class Login(Resource):
 
         if user.authenticate(password):
             login_user(user, remember=True)
-            return user.to_dict(), 200
+            print(user)
+            return user.to_dict(only=()), 200
         if not user:
             return{'Invalid Username/Password'}, 401
-     except:
-        return make_response('Gotta log in', 401)
+    # except:
+        #return make_response('Gotta log in', 401)
+     except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500      
 
 api.add_resource(Login, '/login')
 
@@ -71,8 +75,11 @@ class AuthorizedSession(Resource):
         if current_user.is_authenticated:
             user = current_user.to_dict()
             return make_response(user,200)
-     except:
-         return make_response('Not Authorized', 404)
+    # except:
+         #return make_response('Not Authorized', 404)
+     except Exception as e: 
+                 traceback.print_exc() 
+                 return {"error" : "whatever you want your message to be", "message": str(e)}, 500       
 
 api.add_resource(AuthorizedSession, '/authorize_session')
 
@@ -117,7 +124,7 @@ class Recipients(Resource):
         if user:
             recipients = []
             for recipient in user.recipients:
-                recipients_list = recipient.to_dict()
+                recipients_list = recipient.to_dict(only=("name", "birthday", "id"))
                 recipients.append(recipients_list)
             return make_response( recipients, 200)
         if not user:
@@ -142,7 +149,7 @@ class Recipients(Resource):
             except:
                 return make_response("Could not add recipient", 400)
 
-            return make_response(new_recipient.to_dict(), 200) 
+            return make_response(new_recipient.to_dict(only=("id", "user_id", "name", "birthday")), 200) 
 
         if not user:
             return make_response("Gotta Log In", 404) 
@@ -154,14 +161,28 @@ api.add_resource(Recipients, '/users/<string:username>/recipients')
 
 class Notes(Resource):
    # @login_required
-    def get(self, recipient_id):
-        try:
-            notes_dict = [note.to_dict() for note in Note.query.filter(Note.recipient_id == recipient_id).all()]
-            return {"notes": notes_dict}
-        except:
-            make_response("Not Found", 404)
-   # @login_required
+       def get(self, recipient_id):
+        recipient = Recipient.query.filter(Recipient.id == recipient_id).first()
+        if recipient:
+            notes = []
+            for note in recipient.notes:
+                notes_list = note.to_dict(only=("id", "user_id", "body", "recipient_id"))
+                notes.append(notes_list)
+            return make_response( notes, 200)
+        if not recipient:
+            return make_response("Not Found", 404)
+        
+       def delete(self, recipient_id):
+            try:
+                recipient = Recipient.query.filter(Recipient.id == recipient_id).first()
+                if recipient:
+                    for note in recipient.notes:
+                        db.session.delete(note)
+                        db.session.commit()
 
+                    return make_response({}, 202)
+            except:
+                 return make_response("Failed to delete", 400)
 
             
 api.add_resource(Notes, '/notes/<int:recipient_id>') 
@@ -218,12 +239,15 @@ class OneRecipient(Resource):
 
         
    def delete(self, id):
-       recipient = Recipient.query.filter(Recipient.id == id).first()
+       try:
+        recipient = Recipient.query.filter(Recipient.id == id).first()
 
-       db.session.delete(recipient)
-       db.session.commit()
+        db.session.delete(recipient)
+        db.session.commit()
 
-       return make_response({}, 202)
+        return make_response({}, 202)
+       except:
+           return make_response("Failed to delete", 400)
    
    def patch(self, id):
        recipient = Recipient.query.filter(Recipient.id == id).first()
@@ -271,7 +295,8 @@ class AddNotes(Resource):
             except Exception as e: 
                     traceback.print_exc() 
                     return {"error" : "whatever you want your message to be", "message": str(e)}, 500
-api.add_resource(AddNotes, '/addnotes')            
+api.add_resource(AddNotes, '/addnotes') 
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

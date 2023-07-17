@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import UserContext from "./Context/UserContext";
 
 
 function SignUp({ updateUser }) {
-
+    const { setUser } = useContext(UserContext);
     const [error, setError] = useState(null)
     const navigate = useNavigate()
+    const { username } = useParams()
 
     const schema = yup.object().shape({
         name: yup.string().required("Name is required."),
@@ -31,7 +33,7 @@ function SignUp({ updateUser }) {
         validationSchema: schema,
         //submit callback
         onSubmit: (values, actions) => {
-            console.log(values)
+
             fetch("/signup", {
                 method: "POST",
                 headers: {
@@ -42,8 +44,8 @@ function SignUp({ updateUser }) {
                 if (res.ok) {
                     res.json().then(user => {
                         actions.resetForm()
-                        updateUser(user)
-                        navigate("/users/:username")
+                        setUser(user)
+                        navigate(`/users/${username}`)
                     })
                 } else {
                     res.json().then((error) => setError(error.message));

@@ -1,58 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from "react-router-dom"
 import RecipientsContainer from './Users/User-Recipient/RecipientsContainer'
 import AddRecipients from './Users/User-Recipient/AddRecipients'
-
+import UserContext from "./Context/UserContext";
 import UserForm from './UserForm'
 import GiftsContainer from './Users/User-Gift/GiftsContainer'
 import AddGifts from './Users/User-Gift/AddGifts'
 
 
-function Users({ user, updateUser }) {
+function Users() {
 
   const { username } = useParams()
   const [recipients, setRecipients] = useState([])
   const [gifts, setGifts] = useState([])
   const [userForm, setUserForm] = useState(false)
+  const { user, setUser } = useContext(UserContext)
   useEffect(() => {
     getRecipients();
-    getGifts();
+
   }, [])
 
 
   console.log(user)
 
   function getRecipients() {
-    fetch(`/users/${username}/recipients`)
+    fetch(`/users/${user.username}/recipients`)
       .then(response => {
+        console.log(response)
         if (response.ok) {
-          response.json().then(recipients => setRecipients(recipients))
+          response.json().then(data => setRecipients(data));
         }
 
-        else setRecipients([])
+        //else setRecipients([])
       }
       )
 
   }
-  function getGifts() {
-    fetch(`/users/${username}/gifts`)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(gifts => setGifts(gifts))
-        }
 
-        else setGifts([])
-      }
-      )
-
-  }
 
   function updateRecipients(recipient) {
     setRecipients([...recipients, recipient])
   }
 
-  function onDeleteRecipient(id) {
-    const updateRecipients = recipients.filter((recipient) => recipient.id !== id);
+  function onDeleteRecipient(recipientToDelete) {
+    const updateRecipients = recipients.filter((recipient) => recipient.id !== recipientToDelete.id);
     setRecipients(updateRecipients)
   }
 
@@ -71,7 +62,7 @@ function Users({ user, updateUser }) {
       body: JSON.stringify(user),
     })
       .then((response) => response.json())
-      .then(updateUser)
+      .then(setUser)
   }
   function handleUserForm() {
     setUserForm((userForm) => !userForm)
@@ -87,7 +78,7 @@ function Users({ user, updateUser }) {
         <button className="button" onClick={handleUserForm}>{userForm ? "Hide Form" : "Edit User Info"} </button>
       </h1>
       <RecipientsContainer recipients={recipients} user={user} onDeleteRecipient={onDeleteRecipient} />
-      <AddRecipients recipients={recipients} user={user} updateRecipients={updateRecipients} />
+      <AddRecipients updateRecipients={updateRecipients} user={user} />
       <GiftsContainer gifts={gifts} user={user} />
 
       <AddGifts />

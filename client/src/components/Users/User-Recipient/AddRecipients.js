@@ -38,6 +38,7 @@ function AddRecipients({ user, updateRecipients }) {
           body: JSON.stringify(values)
         }).then(res => {
           if (res.ok) {
+
             res.json().then((recipient) => {
               console.log(recipient);
               actions.resetForm();
