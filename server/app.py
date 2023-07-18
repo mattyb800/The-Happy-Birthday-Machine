@@ -60,7 +60,7 @@ class Login(Resource):
         if user.authenticate(password):
             login_user(user, remember=True)
             print(user)
-            return user.to_dict(), 200
+            return user.to_dict(only=("id","username", "name", "_password_hash", "email")), 200
         if not user:
             return{'Invalid Username/Password'}, 401
     # except:

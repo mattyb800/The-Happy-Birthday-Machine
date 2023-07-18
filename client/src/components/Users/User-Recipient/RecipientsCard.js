@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import UserContext from "../../Context/UserContext";
+import Button from 'react-bootstrap/Button';
 
 function RecipientsCard({ recipient, onDeleteRecipient }) {
   const { id, name, birthday, notes } = recipient
@@ -43,11 +44,11 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
       </section>
       <section>
 
-        <button className="button" onClick={handleClick}>Notes!</button>
+        <button variant="info" onClick={handleClick}>Notes!</button>
 
       </section>
 
-    </li>
+    </li >
   )
 }
 

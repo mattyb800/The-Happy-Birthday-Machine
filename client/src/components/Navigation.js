@@ -9,14 +9,14 @@ function Navigation({ user, updateUser }) {
       .then((response) => {
         if (response.ok) {
           updateUser(null);
-          navigate('/');
+          navigate('/app');
         }
       });
   }
   if (!user) {
     return (
       <div>
-        <NavLink className='button' exact to='/app'>Home!</NavLink>
+        {/*<NavLink className='button' exact to='/'>App!</NavLink>*/}
         <NavLink className='button' exact to="/signup"> Sign Up! </NavLink>
 
         <NavLink className="button" exact to="/login"> Log In! </NavLink>
@@ -30,7 +30,7 @@ function Navigation({ user, updateUser }) {
       <div>Navigation
 
 
-        <NavLink className='button' exact to='/app'>Home!</NavLink>
+        <NavLink className='button' exact to='/home'>Home!</NavLink>
         {/*<NavLink className='button' exact to="/signup"> Sign Up! </NavLink>
 
   <NavLink className="button" exact to="/login"> Log In! </NavLink>*/}

@@ -45,7 +45,7 @@ function SignUp({ updateUser }) {
                     res.json().then(user => {
                         actions.resetForm()
                         setUser(user)
-                        navigate(`/users/${user.username}`)
+                        navigate(`/home`)
                     })
                 } else {
                     res.json().then((error) => setError(error.message));

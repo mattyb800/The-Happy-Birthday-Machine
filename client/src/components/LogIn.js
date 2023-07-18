@@ -36,9 +36,10 @@ function LogIn({ updateUser }) {
             }).then(res => {
                 if (res.ok) {
                     res.json().then(user => {
+                        console.log(user)
                         actions.resetForm()
-                        updateUser(user)
-                        navigate(`/users/${username}`)
+                        setUser(user)
+                        navigate(`/home`)
                     })
                 } else {
                     res.json().then((error) => setError(error.message));

@@ -22,12 +22,13 @@ function RecipientsContainer({ recipients, onDeleteRecipient }) {
 
 
   return (
-    <div>
-      {mappedRecipients}
-      <section>
+    <section>
+      <ul className='cards'>
+        {mappedRecipients}
 
-      </section>
-    </div>
+      </ul>
+
+    </section>
   )
 }
 

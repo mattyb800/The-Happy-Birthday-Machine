@@ -27,7 +27,7 @@ function GiftsCard({ gift, onDeleteGifts, handleFavorite }) {
     return (
         <div>Gift Ideas:
 
-            <li className="gifts" id={id}>
+            <li className="cards" id={id}>
                 <h2>{description}</h2>
                 <img src={image} alt={description} />
                 <h2>{location}</h2>
