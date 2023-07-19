@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import UserContext from './Context/UserContext';
-
+import robot from '../Robot.png';
 
 function Home() {
     const { user } = useContext(UserContext);
@@ -8,9 +8,12 @@ function Home() {
     console.log(user)
 
     return (
-        <div>
-            <h1>LET'S PARTY!</h1>
-        </div>
+        <div className="home">
+            <h1>Let's Party!</h1>
+            <img style={{ width: 500, height: 600 }} src={robot} alt="robot"></img>
+        </div >
+
+
     )
 }
 

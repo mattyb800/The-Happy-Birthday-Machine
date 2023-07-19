@@ -50,9 +50,9 @@ function LogIn({ updateUser }) {
     })
 
     return (
-        <section>
+        <section >
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="login">
 
                 <label> Username:
                     <input

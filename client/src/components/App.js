@@ -11,6 +11,7 @@ import UserContext from './Context/UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
 
+
 function App() {
 
   const [user, setUser] = useState(null)
@@ -45,7 +46,7 @@ function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <div>
+      <div className="App">
         <h1>The Happy Birthday Machine</h1>
         <Navigation user={user} updateUser={updateUser} />
 
@@ -57,6 +58,7 @@ function App() {
           <Route path='/login' element={<LogIn updateUser={updateUser} />} />
           <Route path='/notes/:recipient_id' element={<RecipientNotes />} />
         </Routes>
+
       </div>
     </UserContext.Provider>
   )

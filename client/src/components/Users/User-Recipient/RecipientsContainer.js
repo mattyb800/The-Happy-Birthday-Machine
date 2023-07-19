@@ -22,7 +22,7 @@ function RecipientsContainer({ recipients, onDeleteRecipient }) {
 
 
   return (
-    <section>
+    <section className="recipients-cards">
       <ul className='cards'>
         {mappedRecipients}
 

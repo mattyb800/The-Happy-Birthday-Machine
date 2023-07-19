@@ -57,9 +57,9 @@ function SignUp({ updateUser }) {
 
 
     return (
-        <section>
+        <section >
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="signup">
                 <label> Name:
                     <input
                         type="text"

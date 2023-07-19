@@ -4,8 +4,8 @@ import RecipientsContainer from './Users/User-Recipient/RecipientsContainer'
 import AddRecipients from './Users/User-Recipient/AddRecipients'
 import UserContext from "./Context/UserContext";
 import UserForm from './UserForm'
-
-
+import Button from 'react-bootstrap/Button';
+import cake from '../CAKE2.PNG';
 
 
 function Users() {
@@ -39,6 +39,8 @@ function Users() {
   }
 
 
+
+
   function updateRecipients(recipient) {
     setRecipients([...recipients, recipient])
   }
@@ -68,7 +70,6 @@ function Users() {
   function handleUserForm() {
     setUserForm((userForm) => !userForm)
   }
-
   function handleClick() {
     navigate(`/gifts`);
   };
@@ -82,17 +83,13 @@ function Users() {
 
       <h1>Welcome, {username}
         {userForm ? <UserForm editUser={editUser} /> : null}
-        <button className="button" onClick={handleUserForm}>{userForm ? "Hide Form" : "Edit User Info"} </button>
+        <Button size="sm" variant="outline-dark" onClick={handleClick}>Gifts!</Button>
+        <Button size="sm" variant="outline-dark" onClick={handleUserForm}>{userForm ? "Hide Form" : "Edit User Info"} </Button>
       </h1>
       <RecipientsContainer recipients={recipients} user={user} onDeleteRecipient={onDeleteRecipient} />
       <AddRecipients updateRecipients={updateRecipients} user={user} />
-      <section>
 
-        <button className="button" onClick={handleClick}>Gifts!</button>
-
-      </section>
-
-
+      <img style={{ width: 500, height: 600 }} src={cake} alt="cake"></img>
 
     </div>
   )

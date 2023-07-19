@@ -39,12 +39,12 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
       <section className="info">
         <h2>{name}</h2>
         <h2>{birthday}</h2>
-        <button className="button">Edit Info</button>
-        <button className="button" onClick={() => handleDelete(recipient.id)}>Delete</button>
+
+        <Button size="sm" variant="outline-dark" onClick={() => handleDelete(recipient.id)}>Delete</Button>
       </section>
       <section>
 
-        <button variant="info" onClick={handleClick}>Notes!</button>
+        <Button size="sm" variant="outline-dark" onClick={handleClick}>Notes!</Button>
 
       </section>
 

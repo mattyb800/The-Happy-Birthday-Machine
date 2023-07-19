@@ -63,7 +63,7 @@ function UserForm({ editUser }) {
     return (
         <section>
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="userForm">
                 <label> Name:
                     <input
                         type="text"
@@ -116,4 +116,4 @@ function UserForm({ editUser }) {
     )
 }
 
-export default UserForm
+export default UserForm;

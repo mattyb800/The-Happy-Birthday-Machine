@@ -7,18 +7,22 @@ import GiftSearch from "./GiftSearch";
 
 
 function GiftsContainer() {
-    const { username } = useParams()
+    const { username } = useParams();
     const { user, setUser } = useContext(UserContext)
     const [gifts, setGifts] = useState([])
     const [search, setSearch] = useState('')
 
 
     useEffect(() => {
+
         getGifts();
+
+
     }, []);
 
-
+    console.log(user)
     function getGifts() {
+
         fetch(`/users/${user.username}/gifts`)
             .then(response => {
                 if (response.ok) {
@@ -60,7 +64,7 @@ function GiftsContainer() {
 
 
     return (
-        <div>
+        <div >
             <GiftSearch search={search} handleSearch={handleSearch} />
 
 
@@ -70,7 +74,7 @@ function GiftsContainer() {
             <section>
 
             </section>
-        </div>
+        </div >
     )
 }
 

@@ -76,7 +76,7 @@ class AuthorizedSession(Resource):
     def get(self):
      try:   
         if current_user.is_authenticated:
-            user = current_user.to_dict()
+            user = current_user.to_dict(only=("id","username", "name", "_password_hash", "email"))
             return make_response(user,200)
     # except:
          #return make_response('Not Authorized', 404)

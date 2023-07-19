@@ -50,7 +50,7 @@ function AddGifts({ updateGifts }) {
     })
 
     return (
-        <section>
+        <section className="addgifts">
 
             <form onSubmit={formik.handleSubmit}>
 

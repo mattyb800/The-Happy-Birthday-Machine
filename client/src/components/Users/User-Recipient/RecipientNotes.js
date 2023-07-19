@@ -123,7 +123,7 @@ function RecipientNotes() {
             </section>
             <section>
 
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} className="addNote">
 
                     <label> Note to self:
                         <input
