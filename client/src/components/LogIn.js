@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom"
 import UserContext from "./Context/UserContext";
-
+import hats from "../hats.PNG";
 function LogIn({ updateUser }) {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
@@ -79,6 +79,7 @@ function LogIn({ updateUser }) {
                 </label>
                 <input type="submit" value="Welcome back!" />
             </form>
+            <img style={{ width: 500, height: 600 }} src={hats} alt="hats"></img>
         </section>
 
 

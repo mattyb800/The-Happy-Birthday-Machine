@@ -103,22 +103,32 @@ class CurrentUser(Resource):
                 return make_response("User Not Found", 404)
             return make_response(user.to_dict(),200)
    # @login_required
-    def patch(self, username):
-           
+    def patch(self,username):
+          try: 
             data = request.get_json()
             user = User.query.filter(User.username == username).first()
 
-            if user:       
-                try:
-                    for attr in data:
-                        setattr(user, attr, data.get(attr))
-                    db.session.add(user)
-                    db.session.commit()
-            
-                except Exception as e: 
+            if 'name' in data:
+                user.name = data['name']
+            if 'username' in data:
+                user.username = data['username']
+            if 'email' in data:
+                user.email = data['email']
+            if 'password' in data:
+                user.password = data['password']
+
+            db.session.commit()
+
+            return {
+                "id": user.id,
+                "name": user.name,
+                "username": user.username,
+                "email": user.email
+            }, 200
+          except Exception as e: 
                  traceback.print_exc() 
-                 return {"error" : "Could not edit Recipient", "message": str(e)}, 500    
-            return make_response(user.to_dict(only=("id", "name", "username", "email", "_password_hash")),200)
+                 return {"error" : "Could not delete gift", "message": str(e)}, 500        
+
             
     def delete(self, username):
        try:

@@ -54,6 +54,7 @@ function App() {
           <Route path='/users/:username' element={<Users updateUser={updateUser} user={user} />} />
           <Route path='/gifts' element={<GiftsContainer />} />
           <Route path='/home' element={<Home />} />
+
           <Route path='/signup' element={<SignUp updateUser={updateUser} />} />
           <Route path='/login' element={<LogIn updateUser={updateUser} />} />
           <Route path='/notes/:recipient_id' element={<RecipientNotes />} />

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import UserContext from "./Context/UserContext";
 
 
-function UserForm({ editUser }) {
+function UserForm() {
 
     const [error, setError] = useState(null)
     const navigate = useNavigate()
@@ -15,13 +15,13 @@ function UserForm({ editUser }) {
 
 
     function handleDelete() {
-        fetch(`/users/${username}`, {
+        fetch(`/users/${user.username}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())
             .then(() => {
                 setUser(null);
-                navigate('/app")')
+                navigate('/signup')
             });
     }
 
@@ -42,20 +42,34 @@ function UserForm({ editUser }) {
     const formik = useFormik({
         //initial values form
         initialValues: {
-            name: "",
-            username: "",
-            email: "",
+            name: user.name,
+            username: user.username,
+            email: user.email,
             password: ""
         },
         //yup schema for validation
         validationSchema: schema,
         //submit callback
         onSubmit: (values, actions) => {
-            editUser(values)
-            actions.resetForm()
-            navigate(`/users/${username}`)
+            fetch(`/users/${user.username}`, {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            })
+                .then((response) => response.json())
+                .then(data => setUser(data))
+            navigate('/home')
         }
     })
+
+
+
+
+
+
+
 
 
 
@@ -112,7 +126,7 @@ function UserForm({ editUser }) {
                 <input type="submit" value="Change Info!" />
             </form>
             <button className="button" onClick={() => handleDelete(user)}>Delete Account</button>
-        </section>
+        </section >
     )
 }
 

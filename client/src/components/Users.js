@@ -50,23 +50,7 @@ function Users() {
     setRecipients(updateRecipients)
   }
 
-  function editUser() {
-    const user = {
-      name: '',
-      username: '',
-      password: '',
-      email: ''
-    }
-    fetch(`/users/${username}`, {
-      method: 'PATCH',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => response.json())
-      .then(setUser)
-  }
+
   function handleUserForm() {
     setUserForm((userForm) => !userForm)
   }
@@ -82,7 +66,7 @@ function Users() {
     <div>
 
       <h1>Welcome, {username}
-        {userForm ? <UserForm editUser={editUser} /> : null}
+        {userForm ? <UserForm /> : null}
         <Button size="sm" variant="outline-dark" onClick={handleClick}>Gifts!</Button>
         <Button size="sm" variant="outline-dark" onClick={handleUserForm}>{userForm ? "Hide Form" : "Edit User Info"} </Button>
       </h1>

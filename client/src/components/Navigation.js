@@ -16,7 +16,7 @@ function Navigation({ updateUser }) {
       .then((response) => {
         if (response.ok) {
           updateUser(null);
-          navigate('/app');
+          navigate('/login');
         }
       });
   }

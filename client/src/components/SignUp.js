@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom"
 import UserContext from "./Context/UserContext";
-
+import hats from "../hats.PNG"
 
 function SignUp({ updateUser }) {
     const { setUser } = useContext(UserContext);
@@ -107,6 +107,9 @@ function SignUp({ updateUser }) {
                 </label>
                 <input type="submit" value="Let's Light These Candles!" />
             </form>
+            <figure>
+                <img style={{ width: 500, height: 600 }} src={hats} alt="hats"></img>
+            </figure>
         </section>
     )
 }
