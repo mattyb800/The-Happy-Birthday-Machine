@@ -2,56 +2,38 @@
 Leave yourself birthday reminders and gift ideas to become the ultimate Happy Birthday Machine.
 
 Users will be ables to...
-1. Sign up and login to their profile
+1. Sign up and login and edit their profile
 2. Save birthday reminders of friends and loved ones
-3. View reminders by birthday recipient's name or by calendar date
-4. Keep notes on gift ideas for individual birthday recipient
+3. View reminders by birthday recipient's name and by calendar date
+4. Keep notes for individual birthday recipients
+5. And keep track of any cool gift ideas.
 
 
 
-##SCHEMA
+The Happy Birthday Machine was made using React and Flask.
 
-<img src="./schema.png" alt="Schema">
+To fire up the birthday machine, 
 
+- <code> npm install </code>
+- <code> npm start --prefix client </code>
 
-##WIREFRAMES
+and then in a seperate terminal
 
-<img src="./wireframe1.png" alt="Wireframe">
-<img src="./wireframe2.png" alt="Wireframe">
+-<code> pipenv install </code>
+-<code> pipenv shell </code>
+- cd into <code>server</code>
+-<code> python app.py </code>
 
-##TRELLO BOARD
-
-<img src="./trello.png" alt="trello">
-
-##REACT-TREE
-
-<img src="./reacttree.png" alt="ReactTree"> 
+and you are ready to party!
 
 
-##API ROUTES
-| API Routes            | Method | Body                                        | Response                                                               |
-|-----------------------|--------|---------------------------------------------|------------------------------------------------------------------------|
-| /signup               | POST   | "Name:  Email:  Username:  Password:"       | "Name:{name}  Email:{email}  Username:{username}  Password:{password}" |
-| /login                | POST   | "Username:{username}  Password:{password}"  | "Welcome, {username}!"  {username, password}                           |
-| /logout               | DELETE | "{user_id}"                                 | "{}"                                                                   |
-| /users/{username}     | GET    |                                             | "User Portal:  Basic Info  Reminders List  Gift Ideas List"            |
-| /users/{username}     | PATCH  | "Name:  Username:  Email:"                  | "Name:{name},  Username:{username},  Email:{email}"                    |
-| /users/{username}/recipients  | GET    |                                             | "{user_id.reminders}"                                                  |
-| /users/{username}/recipients  | POST   | "{recipients.name},  {recipients.date}       | "{recipients.name}, {recipients.birthday}"                             |
-                          |
-| /recipients/{recipient.id} | DELETE | "users.reminder"                            | "{}"                                                                   |
-| /users/{username}/gifts | GET    |                                             | "{user_id.gifts}"                                                 |
-| /users/{username}/gifts| POST   | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
-                          |
-| /gift/{gift.id} | DELETE | "{users.gift_ideas}                         | "{}"                                                                   |
+And in case it is your birthday today, 
 
-##CLIENT SIDE ROUTES
-| CLIENT SIDE ROUTES | COMPONENTS         |
-|--------------------|--------------------|
-| /Home              | Home     |
-| /SignUp            | SignUp             |
-| /LogIn             | LogIn              |
-| /users/{username}  | Users, RecipientsContainer, AddRecipients        |
-| /gifts             | GiftsContainer, GiftsCard, GiftSearch, AddGifts |
-| /notes/{recipient.id} | RecipientsNotes, NotesCard, AddNotes  |
-| /LogOut            | LogIn              |
+#HAPPY BIRTHDAY!!!!
+
+
+--Matty B, 
+##Birthday Expert
+
+
+
