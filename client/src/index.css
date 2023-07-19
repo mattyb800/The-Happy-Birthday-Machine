@@ -131,12 +131,14 @@ body {
 }
 
 .addgifts input {
-    background-color: pink;
+    background-color: lightskyblue;
     padding: 2px;
 }
 
 .searchbar input {
-    background-color: pink;
+    background-color: skyblue;
+    width: 50%;
+
 }
 
 
@@ -155,5 +157,9 @@ h2 {
 }
 
 .userForm input {
-    background-color: pink;
+    background-color: yellow;
+}
+
+.friend-form input {
+    background-color: lightgoldenrodyellow;
 }

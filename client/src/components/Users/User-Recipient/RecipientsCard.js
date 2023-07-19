@@ -36,7 +36,7 @@ function RecipientsCard({ recipient, onDeleteRecipient }) {
 
   return (
     <li className="card" id={id}>
-      <section className="info">
+      <section className="friend-info">
         <h2>{name}</h2>
         <h2>{birthday}</h2>
 

@@ -38,29 +38,29 @@ function Navigation({ updateUser }) {
   return (
     <header className="nav">
       <Navbar className="bg-body-tertiary" variant='pills' activeKey="/home" >
-        <Container className="justify-content-center">
-          <div >
+        {/* <Container className="justify-content-center"> */}
+        <div >
 
-            <h2>Navigation</h2>
+          <h2>Navigation</h2>
 
-            <Nav>
+          <Nav>
 
-              <Nav.Link href="/home" >Home!</Nav.Link>
+            <Nav.Link href="/home" >Home!</Nav.Link>
 
 
-              <Nav.Link href={`/users/${user.username}`}> User Portal! </Nav.Link>
-              {user ?
-                (<>
-                  <Button size="sm" variant="outline-dark" onClick={handleLogOut} className="button" >
-                    Log Out!
-                  </Button>
-                </>) :
-                ''}
+            <Nav.Link href={`/users/${user.username}`}> Birthdays! </Nav.Link>
+            {user ?
+              (<>
+                <Button size="sm" variant="outline-dark" onClick={handleLogOut} className="button" >
+                  Log Out!
+                </Button>
+              </>) :
+              ''}
 
-            </Nav>
+          </Nav>
 
-          </div>
-        </Container>
+        </div>
+        {/* </Container> */}
       </Navbar >
     </header>
   )

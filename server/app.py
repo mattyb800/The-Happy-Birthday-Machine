@@ -107,17 +107,19 @@ class CurrentUser(Resource):
            
             data = request.get_json()
             user = User.query.filter(User.username == username).first()
-            try:
-                for attr in data:
-                    setattr(user, attr, data.get(attr))
-                db.session.add(user)
-                db.session.commit()
+
+            if user:       
+                try:
+                    for attr in data:
+                        setattr(user, attr, data.get(attr))
+                    db.session.add(user)
+                    db.session.commit()
             
-            except Exception as e: 
+                except Exception as e: 
                  traceback.print_exc() 
                  return {"error" : "Could not edit Recipient", "message": str(e)}, 500    
-            return make_response(user.to_dict(only=("id", "name", "username", "email")),200)
-      
+            return make_response(user.to_dict(only=("id", "name", "username", "email", "_password_hash")),200)
+            
     def delete(self, username):
        try:
         user = User.query.filter(User.username == username).first()

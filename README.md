@@ -6,8 +6,7 @@ Users will be ables to...
 2. Save birthday reminders of friends and loved ones
 3. View reminders by birthday recipient's name or by calendar date
 4. Keep notes on gift ideas for individual birthday recipient
-5. Edit their profile and reminders
-6. Recieve email reminders of birthday reminders
+
 
 
 ##SCHEMA
@@ -26,7 +25,7 @@ Users will be ables to...
 
 ##REACT-TREE
 
-<img src="./reacttree.png" alt="ReactTree">
+<img src="./reacttree.png" alt="ReactTree"> 
 
 
 ##API ROUTES
@@ -37,25 +36,22 @@ Users will be ables to...
 | /logout               | DELETE | "{user_id}"                                 | "{}"                                                                   |
 | /users/{username}     | GET    |                                             | "User Portal:  Basic Info  Reminders List  Gift Ideas List"            |
 | /users/{username}     | PATCH  | "Name:  Username:  Email:"                  | "Name:{name},  Username:{username},  Email:{email}"                    |
-| /recipients/{user_id}  | GET    |                                             | "{user_id.reminders}"                                                  |
-| /recipients/{user_id}  | POST   | "{recipients.name},  {recipients.date}       | "{recipients.name}, {recipients.birthday}"                             |
-| /birthdays/{user_id}  | PATCH  | "{recipients.name},  {birthdays.date}"      | "{recipients.name}, {recipients.birthday}"                             |
-| /birthdays/{user_id}  | DELETE | "users.reminder"                            | "{}"                                                                   |
-| /gift_ideas/{user_id} | GET    |                                             | "{user_id.gift_ideas}"                                                 |
-| /gift_ideas/{user_id} | POST   | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
-| /gift_ideas/{user_id} | PATCH  | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
-| /gift_ideas/{user_id} | DELETE | "{users.gift_ideas}                         | "{}"                                                                   |
+| /users/{username}/recipients  | GET    |                                             | "{user_id.reminders}"                                                  |
+| /users/{username}/recipients  | POST   | "{recipients.name},  {recipients.date}       | "{recipients.name}, {recipients.birthday}"                             |
+                          |
+| /recipients/{recipient.id} | DELETE | "users.reminder"                            | "{}"                                                                   |
+| /users/{username}/gifts | GET    |                                             | "{user_id.gifts}"                                                 |
+| /users/{username}/gifts| POST   | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
+                          |
+| /gift/{gift.id} | DELETE | "{users.gift_ideas}                         | "{}"                                                                   |
 
 ##CLIENT SIDE ROUTES
 | CLIENT SIDE ROUTES | COMPONENTS         |
 |--------------------|--------------------|
-| /Home              | SignUp, LogIn      |
+| /Home              | Home     |
 | /SignUp            | SignUp             |
 | /LogIn             | LogIn              |
-| /users/{username}  | UserCard           |
-| /recipients        | BirthdaysContainer |
-| /calendar          | BirthdaysCalendar  |
-| /birthdays/add     | AddBirthday        |
-| /gifts             | GiftIdeas          |
-| /gifts/add         | AddGiftIdea        |
+| /users/{username}  | Users, RecipientsContainer, AddRecipients        |
+| /gifts             | GiftsContainer, GiftsCard, GiftSearch, AddGifts |
+| /notes/{recipient.id} | RecipientsNotes, NotesCard, AddNotes  |
 | /LogOut            | LogIn              |
