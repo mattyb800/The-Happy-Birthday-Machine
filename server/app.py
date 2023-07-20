@@ -60,7 +60,7 @@ class Login(Resource):
         if user.authenticate(password):
             login_user(user, remember=True)
             print(user)
-            return user.to_dict(), 200
+            return user.to_dict(only=("id","username", "name", "_password_hash", "email")), 200
         if not user:
             return{'Invalid Username/Password'}, 401
     # except:
@@ -76,7 +76,7 @@ class AuthorizedSession(Resource):
     def get(self):
      try:   
         if current_user.is_authenticated:
-            user = current_user.to_dict()
+            user = current_user.to_dict(only=("id","username", "name", "_password_hash", "email"))
             return make_response(user,200)
     # except:
          #return make_response('Not Authorized', 404)
@@ -103,21 +103,33 @@ class CurrentUser(Resource):
                 return make_response("User Not Found", 404)
             return make_response(user.to_dict(),200)
    # @login_required
-    def patch(self, username):
-           
+    def patch(self,username):
+          try: 
             data = request.get_json()
             user = User.query.filter(User.username == username).first()
-            try:
-                for attr in data:
-                    setattr(user, attr, data.get(attr))
-                db.session.add(user)
-                db.session.commit()
-            
-            except Exception as e: 
+
+            if 'name' in data:
+                user.name = data['name']
+            if 'username' in data:
+                user.username = data['username']
+            if 'email' in data:
+                user.email = data['email']
+            if 'password' in data:
+                user.password = data['password']
+
+            db.session.commit()
+
+            return {
+                "id": user.id,
+                "name": user.name,
+                "username": user.username,
+                "email": user.email
+            }, 200
+          except Exception as e: 
                  traceback.print_exc() 
-                 return {"error" : "Could not edit Recipient", "message": str(e)}, 500    
-            return make_response(user.to_dict(only=("id", "name", "username", "email")),200)
-      
+                 return {"error" : "Could not delete gift", "message": str(e)}, 500        
+
+            
     def delete(self, username):
        try:
         user = User.query.filter(User.username == username).first()

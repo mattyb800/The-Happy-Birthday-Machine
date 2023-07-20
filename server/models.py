@@ -43,13 +43,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     )
     #-----VALIDATIONS------#
 
-    @validates('name')
-    def validate_name(self, key, name):
-        if not name:
-            raise ValueError('What is your name?')
-        if len(name) < 1:
-            raise ValueError('Gonnna need at least a letter')
-        return name
+    
 
 
     @validates('username')

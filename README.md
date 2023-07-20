@@ -2,60 +2,38 @@
 Leave yourself birthday reminders and gift ideas to become the ultimate Happy Birthday Machine.
 
 Users will be ables to...
-1. Sign up and login to their profile
+1. Sign up and login and edit their profile
 2. Save birthday reminders of friends and loved ones
-3. View reminders by birthday recipient's name or by calendar date
-4. Keep notes on gift ideas for individual birthday recipient
-5. Edit their profile and reminders
-6. Recieve email reminders of birthday reminders
+3. View reminders by birthday recipient's name and by calendar date
+4. Keep notes for individual birthday recipients
+5. And keep track of any cool gift ideas.
 
 
-##SCHEMA
 
-<img src="./schema.png" alt="Schema">
+The Happy Birthday Machine was made using React and Flask.
+
+To fire up the birthday machine, 
+
+- <code> npm install </code>
+- <code> npm start --prefix client </code>
+
+and then in a seperate terminal
+
+-<code> pipenv install </code>
+-<code> pipenv shell </code>
+- cd into <code>server</code>
+-<code> python app.py </code>
+
+and you are ready to party!
 
 
-##WIREFRAMES
+And in case it is your birthday today, 
 
-<img src="./wireframe1.png" alt="Wireframe">
-<img src="./wireframe2.png" alt="Wireframe">
-
-##TRELLO BOARD
-
-<img src="./trello.png" alt="trello">
-
-##REACT-TREE
-
-<img src="./reacttree.png" alt="ReactTree">
+# HAPPY BIRTHDAY!!!!
 
 
-##API ROUTES
-| API Routes            | Method | Body                                        | Response                                                               |
-|-----------------------|--------|---------------------------------------------|------------------------------------------------------------------------|
-| /signup               | POST   | "Name:  Email:  Username:  Password:"       | "Name:{name}  Email:{email}  Username:{username}  Password:{password}" |
-| /login                | POST   | "Username:{username}  Password:{password}"  | "Welcome, {username}!"  {username, password}                           |
-| /logout               | DELETE | "{user_id}"                                 | "{}"                                                                   |
-| /users/{username}     | GET    |                                             | "User Portal:  Basic Info  Reminders List  Gift Ideas List"            |
-| /users/{username}     | PATCH  | "Name:  Username:  Email:"                  | "Name:{name},  Username:{username},  Email:{email}"                    |
-| /recipients/{user_id}  | GET    |                                             | "{user_id.reminders}"                                                  |
-| /recipients/{user_id}  | POST   | "{recipients.name},  {recipients.date}       | "{recipients.name}, {recipients.birthday}"                             |
-| /birthdays/{user_id}  | PATCH  | "{recipients.name},  {birthdays.date}"      | "{recipients.name}, {recipients.birthday}"                             |
-| /birthdays/{user_id}  | DELETE | "users.reminder"                            | "{}"                                                                   |
-| /gift_ideas/{user_id} | GET    |                                             | "{user_id.gift_ideas}"                                                 |
-| /gift_ideas/{user_id} | POST   | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
-| /gift_ideas/{user_id} | PATCH  | "{recipient_id.name},  {gifts.description}" | "{recipient_id.name},  {gifts.description}"                            |
-| /gift_ideas/{user_id} | DELETE | "{users.gift_ideas}                         | "{}"                                                                   |
+ ## --Matty B, 
+## Birthday Expert
 
-##CLIENT SIDE ROUTES
-| CLIENT SIDE ROUTES | COMPONENTS         |
-|--------------------|--------------------|
-| /Home              | SignUp, LogIn      |
-| /SignUp            | SignUp             |
-| /LogIn             | LogIn              |
-| /users/{username}  | UserCard           |
-| /recipients        | BirthdaysContainer |
-| /calendar          | BirthdaysCalendar  |
-| /birthdays/add     | AddBirthday        |
-| /gifts             | GiftIdeas          |
-| /gifts/add         | AddGiftIdea        |
-| /LogOut            | LogIn              |
+
+

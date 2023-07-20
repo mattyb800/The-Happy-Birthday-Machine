@@ -1,4 +1,8 @@
 import React from 'react'
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 
 function NotesCard({ note, onDeleteNotes, recipient }) {
     const { id, body } = note
@@ -25,14 +29,20 @@ function NotesCard({ note, onDeleteNotes, recipient }) {
 
     return (
         <div>
-            <li className="card" id={id}>
-                <section classname="info">
-                    <h2>{body}</h2>
+            <Row xs={1} md={1} className="notes">
+                <Col>
+                    <Card style={{ width: '18rem' }} className="text-center" bg="warning">
+                        <li id={id}>
+                            <section className="info">
+                                <Card.Text>{body}</Card.Text>
 
-                    <button className="button" onClick={() => handleDelete(note.id)}>Delete</button>
+                                <Button variant="outline-dark" size="sm" onClick={() => handleDelete(note.id)}>Delete</Button>
 
-                </section>
-            </li>
+                            </section>
+                        </li>
+                    </Card>
+                </Col>
+            </Row>
         </div >
     )
 }

@@ -1,9 +1,11 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
+import Card from 'react-bootstrap/Card';
+import UserContext from "../../Context/UserContext";
+import Button from 'react-bootstrap/Button';
 
 function GiftsCard({ gift, onDeleteGifts, handleFavorite }) {
     const { description, image, location, id } = gift
-
+    const { user } = useContext(UserContext)
 
     function handleDelete() {
         fetch(`/gift/${gift.id}`, {
@@ -26,14 +28,16 @@ function GiftsCard({ gift, onDeleteGifts, handleFavorite }) {
 
     return (
         <div>Gift Ideas:
+            <Card style={{ width: '18rem' }}>
+                <li className="cards" id={id}>
+                    <Card.Title>{description}</Card.Title>
+                    <Card.Img variant="top" src={image} alt={description} />
+                    <Card.Text>{location}</Card.Text>
 
-            <li className="gifts" id={id}>
-                <h2>{description}</h2>
-                <img src={image} alt={description} />
-                <h2>{location}</h2>
-            </li>
+                </li>
+                <Button onClick={() => handleDelete(gift.id)}>Delete</Button>
+            </Card>
 
-            <button className="button" onClick={() => handleDelete(gift.id)}>Delete</button>
         </div >
     )
 }

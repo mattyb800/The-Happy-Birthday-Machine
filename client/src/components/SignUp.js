@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom"
 import UserContext from "./Context/UserContext";
-
+import hats from "../hats.PNG"
 
 function SignUp({ updateUser }) {
     const { setUser } = useContext(UserContext);
@@ -45,7 +45,7 @@ function SignUp({ updateUser }) {
                     res.json().then(user => {
                         actions.resetForm()
                         setUser(user)
-                        navigate(`/users/${user.username}`)
+                        navigate(`/home`)
                     })
                 } else {
                     res.json().then((error) => setError(error.message));
@@ -57,9 +57,9 @@ function SignUp({ updateUser }) {
 
 
     return (
-        <section>
+        <section >
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="signup">
                 <label> Name:
                     <input
                         type="text"
@@ -107,6 +107,9 @@ function SignUp({ updateUser }) {
                 </label>
                 <input type="submit" value="Let's Light These Candles!" />
             </form>
+            <figure>
+                <img style={{ width: 500, height: 600 }} src={hats} alt="hats"></img>
+            </figure>
         </section>
     )
 }

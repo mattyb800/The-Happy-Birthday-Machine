@@ -114,12 +114,16 @@ function RecipientNotes() {
 
     return (
         <div>
-            <p>Notes about {recipient.name}:
-                <p>{notes.length === 0 ? "Perfect. No notes." : mappedNotes}</p></p>
-
             <section>
 
-                <form onSubmit={formik.handleSubmit}>
+                Notes about {recipient.name}:
+                <ul className='cards'>
+                    <p>{notes.length === 0 ? "Perfect. No notes." : mappedNotes}</p>
+                </ul>
+            </section>
+            <section>
+
+                <form onSubmit={formik.handleSubmit} className="addNote">
 
                     <label> Note to self:
                         <input
@@ -136,7 +140,7 @@ function RecipientNotes() {
                     <input type="submit" value="Add Note" />
                 </form>
             </section>
-        </div>
+        </div >
     )
 }
 

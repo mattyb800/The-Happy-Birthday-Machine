@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useContext } from "react-router-dom";
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 function AddRecipients({ user, updateRecipients }) {
   const [error, setError] = useState(null)
@@ -58,33 +61,37 @@ function AddRecipients({ user, updateRecipients }) {
   return (
     <section>
 
-      <form onSubmit={formik.handleSubmit}>
-
-        <label> Name:
-          <input
-            type="text"
-            name="name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            onBlur={formik.handleBlur} />
-          {formik.touched.name && formik.errors.name ? (
-            <h3>{formik.errors.name}</h3>
-          ) : ("")}
-        </label>
-
-        <label> Birthday:
-          <input
-            type="date"
-            name="birthday"
-            onChange={formik.handleChange}
-            value={formik.values.birthday}
-            onBlur={formik.handleBlur} />
-          {formik.touched.birthday && formik.errors.birthday ? (
-            <h3>{formik.errors.birthday}</h3>
-          ) : ("")}
-        </label>
-        <input type="submit" value="Add!" />
-      </form>
+      <Form className='friend-form' onSubmit={formik.handleSubmit}>
+        <Row >
+          <Form.Group as={Col} controlId="formGridName">
+            <Form.Label column="lg" lg={4}> Name:
+              <Form.Control
+                type="text"
+                name="name"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                onBlur={formik.handleBlur} />
+              {formik.touched.name && formik.errors.name ? (
+                <h3>{formik.errors.name}</h3>
+              ) : ("")}
+            </Form.Label>
+          </Form.Group>
+          <Form.Group as={Col} controlId="formGridBday">
+            <Form.Label column="lg" lg={4}> Birthday:
+              <Form.Control
+                type="date"
+                name="birthday"
+                onChange={formik.handleChange}
+                value={formik.values.birthday}
+                onBlur={formik.handleBlur} />
+              {formik.touched.birthday && formik.errors.birthday ? (
+                <h3>{formik.errors.birthday}</h3>
+              ) : ("")}
+            </Form.Label>
+            <input type="submit" value="Add!" />
+          </Form.Group>
+        </Row>
+      </Form>
     </section>
 
 
